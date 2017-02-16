@@ -1,0 +1,47 @@
+#
+# Replaces standard hosts file with StevenBlack's Unified hosts file.
+# https://github.com/StevenBlack/hosts
+#
+
+ui_print("");
+ui_print("==============================================");
+ui_print("|             Unified hosts file             |");
+ui_print("|               by @StevenBlack              |");
+ui_print("==============================================");
+ui_print("");
+
+sleep(1);
+
+set_progress(0.200000);
+
+ui_print(">>> Mounting /system");
+run_program("/sbin/busybox", "mount", "/system");
+show_progress(0.200000,0);
+ui_print("");
+
+ui_print(">>> Deleting old hosts file");
+delete("/system/etc/hosts");
+set_progress(0.400000);
+ui_print("");
+
+ui_print(">>> Extracting new hosts file");
+package_extract_dir("system", "/system");
+set_progress(0.600000);
+ui_print("");
+
+ui_print(">>> Setting hosts permissions");
+set_metadata("/system/etc/hosts", "uid", 0, "gid", 0, "fmode", 0644);
+set_progress(0.800000);
+ui_print("");
+
+ui_print(">>> Unmounting /system");
+run_program("/sbin/busybox", "umount", "/data");
+set_progress(1.000000);
+
+ui_print("");
+ui_print("==============================================");
+ui_print("|           INSTALLATION SUCCESSFUL          |");
+ui_print("==============================================");
+ui_print("");
+
+sleep(2);
